@@ -1,0 +1,48 @@
+body{
+    /*background: white url('images/paper.jpg');*/
+    background-color: cornsilk;
+    background-size: 100%;
+}
+
+.navbar{
+    border-radius: 0;
+    background-color: #087830;
+
+}
+
+
+
+.navbar-brand{
+    font-family: 'Lobster', cursive;
+}
+
+.navbar a{
+    color: white;
+}
+
+.navbar li a{
+    font-family: 'Concert One', cursive;
+}
+
+.caption h2{
+    font-family: 'Roboto';
+    font-size: 2em;
+}
+
+.caption h4{
+    font-family: 'Calibri';
+    font-size: 1em;
+}
+
+.thumbnail{
+    height: 300px;
+    /*width: 400px;*/
+    overflow: hidden;
+}
+.thumbnail img{
+    height: 100%;
+    width: auto;
+    max-height: 50%;
+    max-width: 50%
+
+}
