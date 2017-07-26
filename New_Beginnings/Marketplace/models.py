@@ -34,6 +34,7 @@ class Tag(models.Model):
         return self.text
 
 class Item(models.Model):
+    profile = models.ForeignKey(Profile, null = True, blank=False)
     item_name = models.CharField(max_length = 40)
     thumbnail = models.ImageField(blank=True)
     tag = models.ManyToManyField(Tag, blank = True)
