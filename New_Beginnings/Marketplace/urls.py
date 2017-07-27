@@ -5,6 +5,4 @@ app_name = 'Marketplace'
 
 urlpatterns = [
     url(r'^$', views.HomeView.as_view(), name='home'),
-    url(r'^profile/(?P<user_id>[0-9]+)/$', views.ProfileView, name='profile'),
-    url(r'^item/(?P<user_id>[0-9]+)/$', views.ItemDetailsView, name='item'),
 ]

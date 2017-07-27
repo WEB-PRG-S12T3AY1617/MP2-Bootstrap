@@ -1,7 +1,6 @@
-from django.shortcuts import *
+from django.shortcuts import render
 from django.views import generic
-from .models import *
-
+from .models import Item
 # Create your views here.
 
 
@@ -11,13 +10,3 @@ class HomeView(generic.ListView):
 
     def get_queryset(self):
         return Item.objects.all()
-
-def ProfileView(request, user_id):
-    user = get_object_or_404(Profile, pk = user_id)
-    items = list(Item.objects.filter(profile = user_id))
-
-    return render(request, 'Marketplace/profile.html', {'user': user, 'items':items})
-
-def ItemDetailsView(request, user_id):
-    item = get_object_or_404(Item, pk=user_id)
-    return render(request, 'Marketplace/details.html', {'item': item})

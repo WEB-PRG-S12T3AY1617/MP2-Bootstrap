@@ -7,18 +7,14 @@
             {% for item in all_items reversed%}
 
                 <div class = "col-sm-3 ">
-                    <div class = "ItemPoster">
-                        <a href = "{% url 'Marketplace:profile' item.profile.id %}">
-                            <span>{{ item.profile.FirstName }}</span> &nbsp <span>{{ item.profile.LastName }}</span>
-                        </a>
-                    </div>
+
                     <div class = "thumbnail ">
                         <div class = "caption">
                             <h2>{{ item.item_name }}</h2>
                             <h4>{{ item.created_at }}</h4>
                         </div>
                         {% if item.thumbnail %}
-                            <a href = "{% url 'Marketplace:item' item.pk %}">
+                            <a href = "">
                                 <img src = "{{ item.thumbnail.url }}" class = "img-responsive">
                             </a>
                         {% endif %}
