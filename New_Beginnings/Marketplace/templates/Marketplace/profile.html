@@ -1,17 +1,29 @@
 {% extends 'Marketplace/base.html' %}
 {% block body %}
-    <div class = "posts-container container">
-       <div class = "row table-row">
+    {% if user %}
+    <div class="ProfileDiv">
+        <div class = "Picture">
+            {% if user.displayPic %}
+                    <img src = "{{ user.displayPic.url }}">
+                </div>
 
-           {% if all_items %}
-            {% for item in all_items reversed%}
+            {% else %}
+                    <img src = "{{ user.displayPic.url }}">
+            {% endif %}
+        </div>
+
+        {% if user.is_Student %}
+            <p>Degree: {{ user.degreeProgram }}</p>
+        {% else %}
+            <p>Office: {{ user.office }}</p>
+        {% endif %}
+
+    {% endif %}
+
+    {% if items %}
+        {% for item in items reversed%}
 
                 <div class = "col-sm-3 ">
-                    <div class = "ItemPoster">
-                        <a href = "{% url 'Marketplace:profile' item.profile.id %}">
-                            <span>{{ item.profile.FirstName }}</span> &nbsp <span>{{ item.profile.LastName }}</span>
-                        </a>
-                    </div>
                     <div class = "thumbnail ">
                         <div class = "caption">
                             <h2>{{ item.item_name }}</h2>
@@ -27,10 +39,5 @@
                 </div>
 
             {% endfor %}
-
-           {% endif %}
-
-       </div>
-
-    </div>
+    {% endif %}
 {% endblock %}
