@@ -1,0 +1,43 @@
+{% extends 'Marketplace/base.html' %}
+{% block body %}
+    {% if user %}
+    <div class="ProfileDiv">
+        <div class = "Picture">
+            {% if user.displayPic %}
+                    <img src = "{{ user.displayPic.url }}">
+                </div>
+
+            {% else %}
+                    <img src = "{{ user.displayPic.url }}">
+            {% endif %}
+        </div>
+
+        {% if user.is_Student %}
+            <p>Degree: {{ user.degreeProgram }}</p>
+        {% else %}
+            <p>Office: {{ user.office }}</p>
+        {% endif %}
+
+    {% endif %}
+
+    {% if items %}
+        {% for item in items reversed%}
+
+                <div class = "col-sm-3 ">
+                    <div class = "thumbnail ">
+                        <div class = "caption">
+                            <h2>{{ item.item_name }}</h2>
+                            <h4>{{ item.created_at }}</h4>
+                        </div>
+                        {% if item.thumbnail %}
+                            <a href = "{% url 'Marketplace:item' item.pk %}">
+                                <img src = "{{ item.thumbnail.url }}" class = "img-responsive">
+                            </a>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            {% endfor %}
+    {% endif %}
+{% endblock %}

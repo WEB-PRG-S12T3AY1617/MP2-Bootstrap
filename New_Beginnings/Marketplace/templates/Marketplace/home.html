@@ -1,20 +1,26 @@
 {% extends 'Marketplace/base.html' %}
+{% load modulo %}
 {% block body %}
+
     <div class = "posts-container container">
        <div class = "row table-row">
 
            {% if all_items %}
             {% for item in all_items reversed%}
 
-                <div class = "col-sm-3 ">
-
+                <div class = "col-sm-3 container{% modulo 10 2 %}">
+                    <div class = "ItemPoster">
+                        <a href = "{% url 'Marketplace:profile' item.profile.id %}">
+                            <span>{{ item.profile.FirstName }}</span> &nbsp <span>{{ item.profile.LastName }}</span>
+                        </a>
+                    </div>
                     <div class = "thumbnail ">
                         <div class = "caption">
                             <h2>{{ item.item_name }}</h2>
                             <h4>{{ item.created_at }}</h4>
                         </div>
                         {% if item.thumbnail %}
-                            <a href = "">
+                            <a href = "{% url 'Marketplace:item' item.pk %}">
                                 <img src = "{{ item.thumbnail.url }}" class = "img-responsive">
                             </a>
                         {% endif %}
@@ -27,6 +33,22 @@
            {% endif %}
 
        </div>
+
+        <div class="pagination">
+                    <span class="step-links">
+                        {% if all_items.has_previous %}
+                            <a href="?page={{ all_items.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Page {{ all_items.number }} of {{ all_items.paginator.num_pages }}.
+                        </span>
+
+                        {% if all_items.has_next %}
+                            <a href="?page={{ all_items.next_page_number }}">next</a>
+                        {% endif %}
+                    </span>
+                </div>
 
     </div>
 {% endblock %}
