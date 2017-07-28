@@ -56,20 +56,20 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li class ="">
-                        <a href = "">
+                        <a href = "{% url 'Marketplace:login' %}">
                             <span class = "glyphicon glyphicon-log-in" aria-hidden = "true"></span>
                                 Login
                         </a>
                     </li>
                     <li class = "">
-                        <a href="">
+                        <a href="{% url 'Marketplace:signup' %}">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; <!-- non breaking space -->
                             Register
                         </a>
                     </li>
 
                     <li class = "">
-                        <a href="">
+                        <a href = "{% url 'Marketplace:logout' %}">
                             <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp; <!-- non breaking space -->
                             Logout
                         </a>

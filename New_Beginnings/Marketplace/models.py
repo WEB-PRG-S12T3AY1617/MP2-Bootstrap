@@ -15,6 +15,12 @@ class Profile(models.Model):
     office = models.CharField(max_length=30, null=True, blank=True)
     displayPic = models.FileField(blank=True, null=True)
 
+    @receiver(post_save, sender=User)
+    def update_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+        instance.profile.save()
+
     def __str__(self):
         return self.FirstName +" "+self.LastName
 
