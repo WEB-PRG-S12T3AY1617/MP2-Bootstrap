@@ -1,43 +1,133 @@
-{% extends 'Marketplace/base.html' %}
+{% extends 'Marketplace/profilePage.html' %}
 {% block body %}
     {% if user %}
     <div class="ProfileDiv">
+      <div class=container>
+        <div class="text-center">
         <div class = "Picture">
             {% if user.displayPic  %}
-                    <img src = "{{ user.displayPic.url }}">
+                    <img src = "{{ user.displayPic.url }}" height = 500px width = 500px>
                 </div>
 
             {% else %}
-                    <img src = "{{ user.displayPic.url }}">
+
             {% endif %}
         </div>
 
         {% if user.is_Student %}
-            <p>Degree: {{ user.degreeProgram }}</p>
+            <p class="text-center" style="font-family: 'Open Sans', sans-serif; font-size:25px;">Username: {{ user.user.username }}</p>
+            <p class="text-center" style="font-family: 'Open Sans', sans-serif; font-size:25px;">Degree: {{ user.degreeProgram }}</p>
         {% else %}
-            <p>Office: {{ user.office }}</p>
+            <p class="text-center" style="font-family: 'Open Sans', sans-serif; font-size:25px;">Username: {{ user.user.username }}</p>
+            <p class="text-center" style="font-family: 'Open Sans', sans-serif; font-size:25px;">Office: {{ user.office }}</p>
         {% endif %}
 
     {% endif %}
 
     {% if items %}
         {% for item in items reversed%}
-
+              <div class="text-center">
                 <div class = "col-sm-3 ">
                     <div class = "thumbnail ">
                         <div class = "caption">
-                            <h2>{{ item.item_name }}</h2>
-                            <h4>{{ item.created_at }}</h4>
+                            <h2 style="font-family: 'Open Sans', sans-serif;">{{ item.item_name }}</h2>
+                            <h4 style="font-family: 'Open Sans', sans-serif;">{{ item.created_at }}</h4>
                         </div>
                         {% if item.thumbnail %}
                             <a href = "{% url 'Marketplace:item' item.pk %}">
                                 <img src = "{{ item.thumbnail.url }}" class = "img-responsive">
                             </a>
                         {% endif %}
-
+                        <div class = "caption">
+                          <h4 style="font-family: 'Open Sans', sans-serif;">Tag/s: {{ item.tag.all|join:", " }}</h4>
+                        </div>
                     </div>
                 </div>
+              </div>
 
             {% endfor %}
     {% endif %}
+    </div>
+    </div>
+
+    <div id="MyModal" class="modal fade">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h3 class="modal-title">Your Offers</h3>
+                </div>
+              {% for offer in offers %}
+                  {% if offer.item.profile.id == user.id %}
+                <div class="modal-body">
+                    <h4>{{offer}}
+                    {% if offer.is_Amount %}
+                    <h4>Amount: {{offer.amount_offer}}</h4>
+                    {% else %}
+                    <h4>Exchange for: {{offer.item_offer}}</h4>
+                    {% endif %}
+                    <h4>Reason: {{offer.reason}}</h4>
+                </div>
+                  </a>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#confirm-accept{{user.id}}">Accept</button>
+                        <button type="submit" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#confirm-reject{{user.id}}">Decline</button>
+                    </div>
+
+                </div>
+
+                </div>
+              </div>
+
+            </div>
+              <!-- Modal 2 -->
+              <div id="confirm-accept{{user.id}}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h3>Accept Offer</h3>
+                    </div>
+                    <div class="modal-body">
+                      <h4>Accept this offer?</h4>
+                        Reason: <input type="text">
+                    </div>
+                    <div class="modal-footer">
+                        <div class="text-center">
+                          <a href="{% url 'Marketplace:accept' user.id offer.item.id offer.id %}">
+                          <button type="button" class="btn btn-success">Yes</button>
+                          </a>
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+             <div id="confirm-reject{{user.id}}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h3>Decline Offer</h3>
+                    </div>
+                    <div class="modal-body">
+                      <h4>Decline this offer?</h4>
+                      Reason: <input type="text">
+                    </div>
+                    <div class="modal-footer">
+                      <div class="text-center">
+                          <a href="{% url 'Marketplace:decline' user.id offer.id %}">
+                          <button type="button" class="btn btn-success">Yes</button>
+                          </a>
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                {% endif %}
+              {% endfor %}
+
 {% endblock %}

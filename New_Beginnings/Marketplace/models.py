@@ -34,13 +34,26 @@ class Tag(models.Model):
 class Item(models.Model):
     profile = models.ForeignKey(Profile, null = True, blank=False)
     item_name = models.CharField(max_length = 40)
-    thumbnail = models.ImageField(blank=True)
+    thumbnail = models.ImageField(blank=True,null=True)
     tag = models.ManyToManyField(Tag, blank = True)
     is_secondHand = models.BooleanField(default=False)
     is_academic = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField(default=1)
+    course_name = models.CharField(max_length=30,default="none",blank=True)
 
     def __str__(self):
         return self.item_name
+
+class Offer(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="orig_post")
+    is_Amount = models.BooleanField(default=False)
+    amount_offer = models.IntegerField(default=0,null=True,blank=True)
+    item_offer = models.ForeignKey(Item, on_delete=models.CASCADE, null=True, blank=True)
+    accepted = models.BooleanField(default=False)
+    reason = models.CharField(max_length = 200, blank=True)
+
+    def __str__(self):
+        return self.user.FirstName + self.user.LastName + ' offered on ' + self.item.item_name

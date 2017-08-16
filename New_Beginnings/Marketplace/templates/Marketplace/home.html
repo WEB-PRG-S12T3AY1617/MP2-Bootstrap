@@ -3,9 +3,9 @@
 {% block body %}
 
     <div class = "posts-container container">
-       <div class = "row table-row">
+       <div class = "row table-row" style="font-family: 'Open Sans', sans-serif;">
            {% if current_user.is_authenticated and not request.user.is_staff %}
-               <h3>Welcome {{ current_user.get_username }}</h3>
+               <h3 style="font-family: 'Open Sans', sans-serif;">Welcome, {{ current_user.get_username }}!</h3>
             {% endif %}
            {% if all_items %}
             {% for item in all_items reversed%}
@@ -13,20 +13,22 @@
                 <div class = "col-sm-3 container{% modulo 10 2 %}">
                     <div class = "ItemPoster">
                         <a href = "{% url 'Marketplace:profile' item.profile.id %}">
-                            <span>{{ item.profile.FirstName }}</span> &nbsp <span>{{ item.profile.LastName }}</span>
+                            <span>{{ item.profile.FirstName }}</span> <span>{{ item.profile.LastName }}</span>
                         </a>
                     </div>
                     <div class = "thumbnail ">
                         <div class = "caption">
-                            <h2>{{ item.item_name }}</h2>
-                            <h4>{{ item.created_at }}</h4>
+                            <h2 style="font-family: 'Open Sans', sans-serif;">{{ item.item_name }}</h2>
+                            <h4 style="font-family: 'Open Sans', sans-serif;">{{ item.created_at }}</h4>
                         </div>
                         {% if item.thumbnail %}
                             <a href = "{% url 'Marketplace:item' item.pk %}">
                                 <img src = "{{ item.thumbnail.url }}" class = "img-responsive">
                             </a>
                         {% endif %}
-
+                        <div class = "caption">
+                          <h4 style="font-family: 'Open Sans', sans-serif;">Tag/s: {{ item.tag.all|join:", " }}</h4>
+                        </div>
                     </div>
                 </div>
 
@@ -42,7 +44,7 @@
                             <a href="?page={{ all_items.previous_page_number }}">previous</a>
                         {% endif %}
 
-                        <span class="current">
+                        <span class="current" style="font-family: 'Open Sans', sans-serif;">
                             Page {{ all_items.number }} of {{ all_items.paginator.num_pages }}.
                         </span>
 
@@ -51,6 +53,80 @@
                         {% endif %}
                     </span>
                 </div>
+
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h3 class="modal-title">Your Offers</h3>
+                </div>
+                {% for offer in offers %}
+                  {% if pk == offer.user.id %}
+                  <a href="{% url 'Marketplace:item' offer.item.pk %}">
+                <div class="modal-body">
+                    <h4>{{offer}}</h4>
+                    {% if offer.is_Amount %}
+                        <h4>Amount offered: {{offer.amount_offer}}</h4>
+                    {% else %}
+                        <h4>Exchange for: {{offer.item_offer}}</h4>
+                    {% endif %}
+                        <h4>Reason: {{offer.reason}}</h4>
+                </div>
+                  </a>
+                <div class="modal-footer">
+
+                </div>
+                  {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+
+            </div>
+              <!-- Modal 2 -->
+              <div id="confirm-update" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <h4>Are you sure you want to update?</h4>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                  </div>
+                </div>
+              </div>
+             <div id="confirm-cancel" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <h4>Are you sure you want to cancel?</h4>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="text-center">
+                      {% if offers %}
+                          {% for offer in offers %}
+                            {% if forloop.first %}
+                                <a href="{% url 'Marketplace:delete' offer.pk %}">
+                                    <button type="button" class="btn btn-success">Yes</button>
+                                </a>
+                            {% endif %}
+                          {% endfor %}
+                      {% endif %}
+                        <!--<button type="button" class="btn btn-success" data-dismiss="modal">Yes</button>-->
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
     </div>
 {% endblock %}

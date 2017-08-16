@@ -1,7 +1,10 @@
-{% extends 'Marketplace/base.html' %}
+{% extends 'Marketplace/signupPage.html' %}
 
 {% block body %}
-  <h2>Sign up</h2>
+  <div class="container">
+    <div class="page-header">
+      <h2 style="font-family: 'Pacifico', cursive;">Sign up</h2>
+    </div>
   <form method="post">
     {% csrf_token %}
     {% for field in form %}
@@ -9,13 +12,15 @@
         {{ field.label_tag }}<br>
         {{ field }}
         {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
+          <small style="color: green">{{ field.help_text }}</small>
         {% endif %}
         {% for error in field.errors %}
           <p style="color: red">{{ error }}</p>
         {% endfor %}
       </p>
     {% endfor %}
-    <button type="submit">Sign up</button>
+    <input type="submit" value="Sign up" class="btn btn-info">
+    <!-- <button type="submit">Sign up</button> -->
   </form>
+</div>
 {% endblock %}

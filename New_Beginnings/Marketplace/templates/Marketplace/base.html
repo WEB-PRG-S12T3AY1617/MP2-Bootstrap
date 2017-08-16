@@ -5,9 +5,14 @@
     <title>{% block title %}New Beginnings{% endblock %}</title>
     {% load staticfiles %}
     <link rel = "stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:600i|Permanent+Marker" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
     <link rel="stylesheet" type = "text/css" href="{% static 'Marketplace/style.css' %}"> <!-- references your static directory -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Concert+One|Lobster" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
     <!-- navbar inverse changes it to dark theme-->
@@ -28,6 +33,7 @@
             <!-- Items -->
             <!-- id = topNavBar so that when resized too low, everything in the div will be hidden and topNavBar will show-->
             <div class = "collapse navbar-collapse" id = "topNavBar">
+              {% if user.is_authenticated %}
                 <ul class="nav navbar-nav">
                     <!-- active darkens the item -->
                     <li class = "active">
@@ -38,36 +44,36 @@
                     </li>
 
                     <li class = "">
-                        <a href="">
+                        <a href="{% url 'Marketplace:profile' pk %}" >
                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; <!-- non breaking space -->
                             Profile
                         </a>
                     </li>
 
+                    <li class = "">
+                        <a href="{% url 'Marketplace:post' %}">
+                            <span class="glyphicon glyphicon-post" aria-hidden="true"></span>&nbsp; <!-- non breaking space -->
+                            Post
+                        </a>
+                    </li>
+                    <li class = "">
+                        <a href="" data-toggle="modal" data-target="#myModal">
+                            <span class="glyphicon glyphicon-post" aria-hidden="true"></span>&nbsp; <!-- non breaking space -->
+                            My Offers
+                        </a>
+                    </li>
                 </ul>
+
                 <!-- The search bar navbar-left so that elements will float left -->
                 <form class = "navbar-form navbar-left" role="search" method="get" action="#">
                     <div class="form-group">
                         <!-- query is the variable for storage of the string that people type in on search bar -->
-                        <input type = "text" class = "form-control" name = "query" value=""/>
+                        <input type = "text" class = "form-control" name = "q" value="" placeholder="Search by tags"/>
                         <button type = "submit" class = "btn btn-default">Search</button>
                     </div>
                 </form>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li class ="">
-                        <a href = "{% url 'Marketplace:login' %}">
-                            <span class = "glyphicon glyphicon-log-in" aria-hidden = "true"></span>
-                                Login
-                        </a>
-                    </li>
-                    <li class = "">
-                        <a href="{% url 'Marketplace:signup' %}">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; <!-- non breaking space -->
-                            Register
-                        </a>
-                    </li>
-
                     <li class = "">
                         <a href = "{% url 'Marketplace:logout' %}">
                             <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp; <!-- non breaking space -->
@@ -75,6 +81,42 @@
                         </a>
                     </li>
                 </ul>
+                {% else %}
+                  <ul class="nav navbar-nav">
+                      <!-- active darkens the item -->
+                      <li class = "active">
+                          <a href="{% url 'Marketplace:home' %}">
+                              <span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; <!-- non breaking space -->
+                              Home
+                          </a>
+                      </li>
+                  </ul>
+
+                  <!-- The search bar navbar-left so that elements will float left -->
+                  <form class = "navbar-form navbar-left" role="search" method="get" action="#">
+                      <div class="form-group">
+                          <!-- query is the variable for storage of the string that people type in on search bar -->
+                          <input type = "text" class = "form-control" name = "q" value="" placeholder="Search by tags"/>
+                          <button type = "submit" class = "btn btn-default">Search</button>
+                      </div>
+                  </form>
+
+                  <ul class="nav navbar-nav navbar-right">
+                      <li class ="">
+                          <a href = "{% url 'Marketplace:login' %}">
+                              <span class = "glyphicon glyphicon-log-in" aria-hidden = "true"></span>
+                                  Login
+                          </a>
+                      </li>
+                      <li class = "">
+                          <a href="{% url 'Marketplace:signup' %}">
+                              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; <!-- non breaking space -->
+                              Register
+                          </a>
+                      </li>
+
+                  </ul>
+                  {% endif %}
             </div>
         </div>
     </nav>

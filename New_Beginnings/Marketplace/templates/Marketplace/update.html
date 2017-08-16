@@ -1,0 +1,13 @@
+{% include 'Marketplace/base.html' %}
+{% block body %}
+<div class="container">
+    <div class="page-header">
+      <h2 style="font-family: 'Pacifico', cursive;">Update your offer</h2>
+    </div>
+    <form name = "form" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update Offer" class="btn btn-info">
+    </form>
+</div>
+{% endblock %}

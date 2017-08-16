@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import *
+from django.forms import ModelForm
 class LoginForm(forms.Form):
     user= forms.CharField(max_length = 50)
     password = forms.CharField(widget = forms.PasswordInput())
@@ -16,3 +18,24 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name' ,'birthdate','Student','degree','office','password1','password2',)
+
+class PostItemForm(forms.ModelForm):
+    item_name = forms.CharField()
+    thumbnail = forms.FileField()
+    tag = forms.ModelMultipleChoiceField(queryset=Tag.objects.all())
+    is_academic = forms.BooleanField(required=False)
+    quantity = forms.IntegerField()
+    course_name = forms.CharField()
+
+    class Meta:
+        model = Item
+        fields = {'item_name','thumbnail','tag','is_academic','quantity','course_name'}
+
+class MakeOfferForm(forms.ModelForm):
+    is_Amount = forms.BooleanField(required=False)
+    amount_offer = forms.IntegerField(required=False)
+    reason = forms.CharField(required=True)
+
+    class Meta:
+        model = Offer
+        fields = {'is_Amount','amount_offer','item_offer','reason'}

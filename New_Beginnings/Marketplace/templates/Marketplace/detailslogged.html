@@ -1,0 +1,147 @@
+{% extends 'Marketplace/base.html' %}
+{% block body %}
+    {% if item %}
+    <div class="container">
+        <div class="text-center">
+         <a class = "container">
+            <a href = "{% url 'Marketplace:profile' item.profile.id %}">
+                <h1 style="font-family: 'Open Sans', sans-serif; font-size:25px;"><span>{{ item.profile.FirstName }}</span> <span>{{ item.profile.LastName }}</span></h1>
+            </a>
+             <h2 style="font-family: 'Pacifico', cursive;">{{ item.item_name }}</h2>
+            <img src="{{ item.thumbnail.url }}" class = "detailThumbnail" height = 450px width = 450px>
+            {% if item.is_secondHand %}
+                <p>Condition: Secondhand</p>
+            {% else %}
+                <p>Condition: Brand-New</p>
+            {% endif %}
+
+            {% if item.profile.is_Student %}
+                <p>Use: Academic</p>
+            {% else %}
+                <p>Use: Office</p>
+            {% endif %}
+
+            {% if item.tag %}
+                <p>Tag/s: {{ item.tag.all|join:", " }}</p>
+            {% endif %}
+            <!-- <a href="{% url 'Marketplace:offer' item.pk %}"> -->
+            {% if offers %}
+            {% else %}
+                {% if pk != item.profile.id %}
+                    <a style="font-family: 'Open Sans', sans-serif;" href="{% url 'Marketplace:offer' item.pk %}">Make an Offer</button>
+                {% endif %}
+            {% endif %}
+                <!--{% for offer in offers %}-->
+                    <!--{% if forloop.last and offer.item != item %}-->
+                        <!--<a style="font-family: 'Open Sans', sans-serif;" href="{% url 'Marketplace:offer' item.pk %}">Make an Offer</button>-->
+                    <!--{% elif offer.item == item %}-->
+                    <!--{% endif %}-->
+                <!--{% endfor %}-->
+            </a>
+                <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h3 class="modal-title">Your Offers</h3>
+                </div>
+                <div class="modal-body">
+                    {% if offers %}
+                        {% for offer in offers %}
+                            {% if forloop.first %}
+                                <h4>{{offer}}</h4>
+                                {% if offer.is_Amount %}
+                                    <h4>Amount offered: {{offer.amount_offer}}</h4>
+                                {% else %}
+                                    <h4>Exchange for: {{offer.item_offer}}</h4>
+                                {% endif %}
+                                    <h4>Reason: {{offer.reason}}</h4>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                      {% if pk != item.profile.id %}
+                        <h4>You have no offers for this item!</h4>
+                      {% else %}
+                        <h4>This is an item you posted!</h4>
+                      {% endif %}
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                  <div class="text-center">
+                    {% if offers %}
+                        <a>
+                            <button type="submit" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#confirm-update">Update</button>
+                        </a>
+                        <a>
+                            <button type="submit" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#confirm-cancel">Cancel</button>
+                        </a>
+                    {% endif %}
+
+                </div>
+
+                </div>
+                </div>
+              </div>
+
+            </div>
+              <!-- Modal 2 -->
+              <div id="confirm-update" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <h4>Are you sure you want to update?</h4>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="text-center">
+                      {% if offers %}
+                          {% for offer in offers %}
+                            {% if forloop.first %}
+                                <a href="{% url 'Marketplace:update' item.pk offer.pk %}">
+                                    <button type="button" class="btn btn-success">Yes</button>
+                                </a>
+                            {% endif %}
+                          {% endfor %}
+                      {% endif %}
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+             <div id="confirm-cancel" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <h4>Are you sure you want to cancel?</h4>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="text-center">
+                      {% if offers %}
+                          {% for offer in offers %}
+                            {% if forloop.first %}
+                                <a href="{% url 'Marketplace:delete' offer.pk %}">
+                                    <button type="button" class="btn btn-success">Yes</button>
+                                </a>
+                            {% endif %}
+                          {% endfor %}
+                      {% endif %}
+                        <!--<button type="button" class="btn btn-success" data-dismiss="modal">Yes</button>-->
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+         </div>
+        </div>
+    {% endif %}
+{% endblock %}
